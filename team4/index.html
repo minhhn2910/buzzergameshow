@@ -14,7 +14,9 @@ function sendBuzz() {
 			if(this.responseText.trim() ==="in"){
 			//console.log("hi");
 			//	$statusText.removeClass().addClass( "status-in" );
+
 				pStatus.className = "status-in";
+        playSound();
 			}
 			else if(this.responseText.trim() ==="out"){
 			//	$statusText.removeClass().addClass( "status-out" );
@@ -48,7 +50,9 @@ function make_call()
     make_call();
   }, 1000);
 }
-
+function playSound () {
+    document.getElementById('play').play();
+}
 $(document).ready(function() {
   make_call();
 });
@@ -87,5 +91,7 @@ h2 {
 <form>
 </form>
 <div id="statusText" class="status-normal"> <p>Status: <span id="txtHint"></span></p> </div>
+
+<audio id="play" src="../sound.wav"></audio>
 </body>
 </html>

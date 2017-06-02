@@ -15,6 +15,7 @@ function sendBuzz() {
 			//console.log("hi");
 			//	$statusText.removeClass().addClass( "status-in" );
 				pStatus.className = "status-in";
+        playSound();
 			}
 			else if(this.responseText.trim() ==="out"){
 			//	$statusText.removeClass().addClass( "status-out" );
@@ -48,7 +49,9 @@ function make_call()
     make_call();
   }, 1000);
 }
-
+function playSound () {
+    document.getElementById('play').play();
+}
 $(document).ready(function() {
   make_call();
 });
@@ -119,5 +122,7 @@ h2 {
 
 
 <button class="button center" onclick="sendBuzz()">Buzz</button>
+
+<audio id="play" src="../sound.wav"></audio>
 </body>
 </html>

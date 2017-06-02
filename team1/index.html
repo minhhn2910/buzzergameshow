@@ -14,15 +14,17 @@ function sendBuzz() {
 			if(this.responseText.trim() ==="in"){
 			//console.log("hi");
 			//	$statusText.removeClass().addClass( "status-in" );
+
 				pStatus.className = "status-in";
+        playSound();
 			}
 			else if(this.responseText.trim() ==="out"){
 			//	$statusText.removeClass().addClass( "status-out" );
 				pStatus.className = "status-out";
 			}
 			else{
-			//	$statusText.removeClass().addClass( "status-normal" );	
-				pStatus.className = "status-normal";			
+			//	$statusText.removeClass().addClass( "status-normal" );
+				pStatus.className = "status-normal";
 			}
             document.getElementById("txtHint").innerHTML = this.responseText;
         }
@@ -36,19 +38,21 @@ function make_call()
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
 			if (this.responseText =='1'){
-				document.getElementById("statusText").className = "status-normal";		
+				document.getElementById("statusText").className = "status-normal";
 				document.getElementById("txtHint").innerHTML = "Not ready yet";
 			}
 				//document.getElementById("txtHint").innerHTML = this.responseText;
         }
     };
     xmlhttp.open("GET", "../buzzserver.php?q=status" , true);
-    xmlhttp.send();	
-  setTimeout(function(){ 
+    xmlhttp.send();
+  setTimeout(function(){
     make_call();
   }, 1000);
 }
-
+function playSound () {
+    document.getElementById('play').play();
+}
 $(document).ready(function() {
   make_call();
 });
@@ -84,8 +88,10 @@ h2 {
 
 <h1><b>Press any key when allowed</b></h1>
 <h2><b>You must RELEASE the key after pressed. Ortherwise, the system shall not recognize your action.</b></h2>
-<form> 
+<form>
 </form>
 <div id="statusText" class="status-normal"> <p>Status: <span id="txtHint"></span></p> </div>
+
+<audio id="play" src="../sound.wav"></audio>
 </body>
 </html>
