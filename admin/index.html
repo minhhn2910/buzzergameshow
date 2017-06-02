@@ -1,0 +1,95 @@
+<html>
+<head>
+<style>
+.button {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+.button2 {background-color: #008CBA;} /* Blue */
+.button3 {background-color: #f44336;} /* Red */ 
+.button4 {background-color: #e7e7e7; color: black;} /* Gray */ 
+.button5 {background-color: #555555;} /* Black */
+
+.button:hover {background-color: #3e8e41}
+
+.button3:hover {background-color: #bc1a40}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.button3:active {
+  background-color: #bc1a40;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+</style>
+<script src="../jquery.min.js"></script>
+<script>
+function start() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("txtHint").innerHTML = this.responseText;
+    }
+    };
+    xmlhttp.open("GET", "../buzzserver.php?q=start", true);
+    xmlhttp.send();
+}
+
+function reset() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("txtHint").innerHTML = this.responseText;
+    }
+    };
+    xmlhttp.open("GET", "../buzzserver.php?q=resetall", true);
+    xmlhttp.send();
+}
+
+function make_call()
+{
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+			console.log(this.responseText);
+			if (this.responseText !=="")
+				document.getElementById("txtHint").innerHTML = "Team " + this.responseText;
+				//document.getElementById("txtHint").innerHTML = this.responseText;
+        }
+    };
+    xmlhttp.open("GET", "../buzzserver.php?q=getwinner" , true);
+    xmlhttp.send();	
+  setTimeout(function(){ 
+    make_call();
+  }, 1500);
+}
+
+$(document).ready(function() {
+  make_call();
+});
+</script>
+</head>
+<body>
+
+<p><b>Press start to allow teams to activate buzzer. Press reset to start a new round.</b></p>
+
+<p>Status: <span id="txtHint"></span></p>
+
+<button class="button" onclick="start()">Start</button>
+
+<button class="button button3" onclick="reset()">Reset (New round)</button>
+</body>
+</html>

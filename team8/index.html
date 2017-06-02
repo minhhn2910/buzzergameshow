@@ -1,0 +1,123 @@
+<html onkeyup="sendBuzz()">
+<head>
+<script src="../jquery.min.js"></script>
+<script>
+var team = 8;
+function sendBuzz() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+			var pStatus = document.getElementById("statusText");
+		//	console.log(this.responseText);
+		//	console.log(this.responseText.trim());
+			//alert(this.responseText);
+			if(this.responseText.trim() ==="in"){
+			//console.log("hi");
+			//	$statusText.removeClass().addClass( "status-in" );
+				pStatus.className = "status-in";
+			}
+			else if(this.responseText.trim() ==="out"){
+			//	$statusText.removeClass().addClass( "status-out" );
+				pStatus.className = "status-out";
+			}
+			else{
+			//	$statusText.removeClass().addClass( "status-normal" );
+				pStatus.className = "status-normal";
+			}
+            document.getElementById("txtHint").innerHTML = this.responseText;
+        }
+    };
+    xmlhttp.open("GET", "../buzzserver.php?q=" + team, true);
+    xmlhttp.send();
+}
+function make_call()
+{
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+			if (this.responseText =='1'){
+				document.getElementById("statusText").className = "status-normal";
+				document.getElementById("txtHint").innerHTML = "Not ready yet";
+			}
+				//document.getElementById("txtHint").innerHTML = this.responseText;
+        }
+    };
+    xmlhttp.open("GET", "../buzzserver.php?q=status" , true);
+    xmlhttp.send();
+  setTimeout(function(){
+    make_call();
+  }, 1000);
+}
+
+$(document).ready(function() {
+  make_call();
+});
+</script>
+
+<style>
+h1 {
+    color: green;
+	text-align: center;
+}
+h2 {
+    color: green;
+	text-align: center;
+}
+.status-in{
+	color: green;
+	font-size: 5em;
+	text-align: center;
+}
+.status-out{
+	color: red;
+	font-size: 5em;
+	text-align: center;
+}
+.status-normal{
+	color: grey;
+	font-size: 5em;
+	text-align: center;
+}
+.button {
+  display: inline-block;
+  padding: 25px 35px;
+  font-size: 3.5em;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+.center {
+    margin: auto;
+    width: 25%
+    padding: 10px;
+    display: block;
+}
+.button:hover {background-color: #3e8e41}
+
+.button3:hover {background-color: #bc1a40}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+</style>
+</head>
+<body>
+
+<h1><b>Press any key when allowed</b></h1>
+<h2><b>You must RELEASE the key after pressed. Ortherwise, the system shall not recognize your action.</b></h2>
+<form>
+</form>
+<div id="statusText" class="status-normal"> <p>Status: <span id="txtHint"></span></p> </div>
+
+
+<button class="button center" onclick="sendBuzz()">Buzz</button>
+</body>
+</html>
